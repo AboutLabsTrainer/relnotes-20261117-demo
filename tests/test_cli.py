@@ -22,3 +22,13 @@ def test_cli_meldet_statistik_auf_stderr(tmp_path, capsys):
     main(["--input", str(src), "--output", str(tmp_path / "n.md")])
     captured = capsys.readouterr()
     assert "1 Commits verarbeitet, 1 Zeilen uebersprungen." in captured.err
+
+
+def test_version_ohne_eingabedatei(capsys):
+    import pytest
+
+    with pytest.raises(SystemExit) as result:
+        main(["--version"])
+
+    assert result.value.code == 0
+    assert capsys.readouterr().out.strip() == "relnotes 0.1.0"
