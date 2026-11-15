@@ -29,6 +29,8 @@ def build_parser() -> argparse.ArgumentParser:
         "--output", "-o",
         help="Zieldatei fuer das Markdown (Standard: stdout)",
     )
+    parser.add_argument("--version", action="version", version="%(prog)s 0.1.0")
+    parser.add_argument("--quiet", "-q", action="store_true", help="Statistik unterdrücken")
     return parser
 
 
@@ -48,11 +50,12 @@ def main(argv: list[str] | None = None) -> int:
     else:
         print(markdown)
 
-    skipped = total - len(commits)
-    print(
-        f"{len(commits)} Commits verarbeitet, {skipped} Zeilen uebersprungen.",
-        file=sys.stderr,
-    )
+    if not args.quiet:
+        skipped = total - len(commits)
+        print(
+            f"{len(commits)} Commits verarbeitet, {skipped} Zeilen uebersprungen.",
+            file=sys.stderr,
+        )
     return 0
 
 
