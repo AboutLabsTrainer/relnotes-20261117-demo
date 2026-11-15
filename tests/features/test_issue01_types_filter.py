@@ -4,7 +4,6 @@ Skip-Marker entfernen, sobald das Feature implementiert ist.
 """
 import pytest
 
-pytestmark = pytest.mark.skip(reason="ISSUE-01: Skip entfernen, wenn implementiert (Demo D-003)")
 
 
 def make(type_, desc="x"):
