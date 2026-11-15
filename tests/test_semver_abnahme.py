@@ -20,3 +20,7 @@ def test_breaking_hat_vorrang_unabhaengig_von_reihenfolge(reverse):
 
 def test_kursregel_fuer_nullversion():
     assert suggest_version("0.1.0", [commit("feat", True)]) == "1.0.0"
+
+
+def test_perf_allein_erhoeht_patch():
+    assert suggest_version("2.3.1", [commit("perf")]) == "2.3.2"

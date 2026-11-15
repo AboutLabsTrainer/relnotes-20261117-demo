@@ -11,6 +11,6 @@ def suggest_version(current: str, commits: list[Commit]) -> str:
         return f"{major + 1}.0.0"
     if any(commit.type == "feat" for commit in commits):
         return f"{major}.{minor + 1}.0"
-    if any(commit.type == "fix" for commit in commits):
+    if any(commit.type in ("fix", "perf") for commit in commits):
         return f"{major}.{minor}.{patch + 1}"
     return current
