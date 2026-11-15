@@ -14,6 +14,7 @@ from pathlib import Path
 from relnotes.grouping import group_commits
 from relnotes.parser import parse_lines
 from relnotes.render import render_markdown
+from relnotes.semver import suggest_version
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -31,6 +32,7 @@ def build_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument("--version", action="version", version="%(prog)s 0.1.0")
     parser.add_argument("--quiet", "-q", action="store_true", help="Statistik unterdrücken")
+    parser.add_argument("--suggest-version", metavar="AKTUELL")
     return parser
 
 
@@ -56,6 +58,8 @@ def main(argv: list[str] | None = None) -> int:
             f"{len(commits)} Commits verarbeitet, {skipped} Zeilen uebersprungen.",
             file=sys.stderr,
         )
+    if args.suggest_version:
+        print(f"Versionsvorschlag: {suggest_version(args.suggest_version, commits)}", file=sys.stderr)
     return 0
 
 
