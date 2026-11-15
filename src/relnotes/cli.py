@@ -11,7 +11,7 @@ import argparse
 import sys
 from pathlib import Path
 
-from relnotes.grouping import group_commits
+from relnotes.grouping import filter_by_types, group_commits
 from relnotes.parser import parse_lines
 from relnotes.render import render_markdown
 
@@ -31,6 +31,7 @@ def build_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument("--version", action="version", version="%(prog)s 0.1.0")
     parser.add_argument("--quiet", "-q", action="store_true", help="Statistik unterdrücken")
+    parser.add_argument("--types", help="Commit-Typen, kommagetrennt")
     return parser
 
 
@@ -42,6 +43,8 @@ def main(argv: list[str] | None = None) -> int:
     # von Merge-Commits oder unbekannten Typen.
     total = sum(1 for line in text.splitlines() if line.strip())
     commits = parse_lines(text)
+    if args.types:
+        commits = filter_by_types(commits, [item.strip() for item in args.types.split(",")])
     groups = group_commits(commits)
     markdown = render_markdown(groups)
 

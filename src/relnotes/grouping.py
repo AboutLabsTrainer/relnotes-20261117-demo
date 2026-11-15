@@ -1,10 +1,4 @@
-"""Gruppierung geparster Commits fuer die Ausgabe.
-
-Wandelt die flache Commit-Liste in Buckets um: ein Dictionary, dessen Keys
-die Sektionen aus SECTION_ORDER sind und dessen Values Listen von Commits
-sind. Breaking-Commits stehen in zwei Buckets: einmal unter "breaking" (oben
-im Changelog) und einmal unter ihrem Conventional-Typ (feat/fix/...).
-"""
+"""Gruppierung geparster Commits fuer die Ausgabe."""
 
 from __future__ import annotations
 
@@ -35,6 +29,11 @@ def group_commits(commits: list[Commit]) -> dict[str, list[Commit]]:
     for commit in commits:
         if commit.breaking:
             buckets["breaking"].append(commit)
-        # Typ-Bucket immer fuellen, auch wenn der Commit schon unter breaking liegt.
         buckets[commit.type].append(commit)
     return {key: value for key, value in buckets.items() if value}
+
+
+def filter_by_types(commits: list[Commit], types: list[str]) -> list[Commit]:
+    """Behaelt nur Commits der angegebenen Typen (ISSUE-01)."""
+    wanted = set(types)
+    return [commit for commit in commits if commit.type in wanted]
