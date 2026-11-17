@@ -33,7 +33,7 @@ KNOWN_TYPES = {"feat", "fix", "perf", "refactor", "docs", "test", "build", "ci",
 #   desc  - Rest nach ": "
 # Drei Tests in tests/test_parser.py markieren Luecken in diesem Ablauf.
 HEADER_RE = re.compile(
-    r"^(?P<type>[a-z]+)"
+    r"^(?P<type>[A-Za-z]+)"
     r"(?:\((?P<scope>[^)]*)\))?"
     r"(?P<bang>!)?"
     r":\s+(?P<desc>.+)$"
@@ -63,12 +63,13 @@ def parse_line(line: str) -> Commit | None:
     if len(parts) != 3:
         return None
     sha, author, subject = parts
+    subject = subject.strip()
 
     match = HEADER_RE.match(subject)
     if not match:
         return None
 
-    ctype = match.group("type")
+    ctype = match.group("type").lower()
     if ctype not in KNOWN_TYPES:
         return None
 
