@@ -34,7 +34,7 @@ KNOWN_TYPES = {"feat", "fix", "perf", "refactor", "docs", "test", "build", "ci",
 # Drei Tests in tests/test_parser.py markieren Luecken in diesem Ablauf.
 HEADER_RE = re.compile(
     r"^(?P<type>[a-z]+)"
-    r"(?P<scope>\([^)]*\))?"
+    r"(?:\((?P<scope>[^)]*)\))?"
     r"(?P<bang>!)?"
     r":\s+(?P<desc>.+)$"
 )
