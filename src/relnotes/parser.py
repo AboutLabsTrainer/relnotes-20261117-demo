@@ -73,7 +73,7 @@ def parse_line(line: str) -> Commit | None:
         return None
 
     scope = match.group("scope")
-    breaking = "BREAKING CHANGE" in subject
+    breaking = bool(match.group("bang")) or "BREAKING CHANGE" in subject
 
     return Commit(
         hash=sha.strip(),
